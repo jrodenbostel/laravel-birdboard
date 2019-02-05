@@ -26,5 +26,10 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];
+    ];  
+
+    public function projects() {
+        //adding 'owner_id to the end of this overrides the default foreign key name 'user_id's
+        return $this->hasMany(Project::class, 'owner_id');
+    }
 }
