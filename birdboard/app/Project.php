@@ -9,7 +9,8 @@ class Project extends Model
     protected $guarded = [];
 
     //helper method for redirects
-    public function path() {
+    public function path()
+    {
         //concatenation
         //return '/projects/' . $this->id;
 
@@ -17,7 +18,8 @@ class Project extends Model
         return "/projects/{$this->id}";
     }
 
-    public function owner() {
+    public function owner()
+    {
 
         return $this->belongsTo(User::class);
     }

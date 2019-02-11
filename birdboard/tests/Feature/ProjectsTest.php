@@ -11,23 +11,12 @@ class ProjectsTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function guests_cannot_create_projects() {
-        $attributes = factory('App\Project')->raw();
-
-        $this->post('/projects', $attributes)->assertRedirect('login');
-    } 
-
-    /** @test */
-    public function guests_cannot_view_projects() {
-        factory('App\Project')->create();
-
-        $this->get('/projects')->assertRedirect('login');
-    } 
-
-    /** @test */
-    public function guests_cannot_view_a_single_project() {
+    public function guests_cannot_control_projects() {
         $project = factory('App\Project')->create();
 
+        $this->post('/projects', $project->toArray())->assertRedirect('login');
+        $this->get('/projects')->assertRedirect('login');
+        $this->get('/projects/create')->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
     } 
 
@@ -49,6 +38,8 @@ class ProjectsTest extends TestCase
         $attributes = ['title' => $this->faker->sentence(), 'description' => $this->faker->paragraph()];
 
         $this->actingAs(factory('App\User')->create());
+
+        $this->get('/projects/create')->assertStatus(200);
         
         $this->post('/projects', $attributes)->assertRedirect('/projects');
 

@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -26,9 +25,10 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];  
+    ];
 
-    public function projects() {
+    public function projects()
+    {
         //adding 'owner_id to the end of this overrides the default foreign key name 'user_id's
         return $this->hasMany(Project::class, 'owner_id');
     }
