@@ -24,11 +24,12 @@
         <nav class="bg-white">
             <div class="container mx-auto">
                 <div class="flex justify-between items-center py-2">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <h1>
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            <img src="/img/birdboard.svg" alt="{{ config('app.name', 'Laravel') }}"/>
 
-
+                        </a>
+                    </h1>
                     <div>
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
