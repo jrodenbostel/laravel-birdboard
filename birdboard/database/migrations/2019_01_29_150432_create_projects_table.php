@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProjectsTable extends Migration
 {
@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->text('description');
             $table->timestamps();
 
-            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade'); 
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

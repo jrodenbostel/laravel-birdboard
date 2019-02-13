@@ -28,8 +28,6 @@ class ProjectsController extends Controller
         //     abort(403);
         // }
 
-        $email = auth()->user()->email;
-
         //updated from above to read a little easier
         if (auth()->user()->isNot($project->owner)) {
             abort(403);
@@ -50,8 +48,8 @@ class ProjectsController extends Controller
         //any user id)
         //$attributes['owner_id'] = auth()->id();
 
-        auth()->user()->projects()->create($attributes);
+        $project = auth()->user()->projects()->create($attributes);
 
-        return redirect('/projects');
+        return redirect($project->path());
     }
 }
