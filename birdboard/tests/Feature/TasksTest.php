@@ -27,6 +27,39 @@ class TasksTest extends TestCase
     }
 
     /** @test */
+    public function a_task_owner_can_complete_a_task()
+    {
+        //turn off default exception handling
+        $this->withoutExceptionHandling();
+
+        $sentence = $this->faker->sentence();
+        $attributes = ['body' => $sentence, 'isComplete' => true];
+
+        $this->signIn();
+
+        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
+        $task = factory('App\Task')->create(['project_id' => $project->id]);
+
+        $this->patch($project->path().$task->path(), $attributes)->assertStatus(302);
+        $this->assertDatabaseHas('tasks', ['id' => $task->id, 'isComplete' => 1, 'body' => $sentence]);
+    }
+
+    /** @test */
+    public function any_user_cannot_complete_any_task()
+    {
+        $sentence = $this->faker->sentence();
+        $attributes = ['body' => $sentence, 'isComplete' => true];
+
+        $this->signIn();
+
+        $project = factory('App\Project')->create();
+        $task = factory('App\Task')->create(['project_id' => $project->id]);
+
+        $this->patch($project->path().$task->path(), $attributes)->assertStatus(403);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id, 'isComplete' => 1, 'body' => $sentence]);
+    }
+
+    /** @test */
     public function a_task_requires_a_body()
     {
         $this->signIn();

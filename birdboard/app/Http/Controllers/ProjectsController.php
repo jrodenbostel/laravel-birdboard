@@ -52,7 +52,7 @@ class ProjectsController extends Controller
 
         $project = auth()->user()->projects()->create($attributes);
 
-        Mail::to(auth()->user())->send(new ProjectCreated($project));
+        //Mail::to(auth()->user())->send(new ProjectCreated($project));
 
         return redirect($project->path());
     }

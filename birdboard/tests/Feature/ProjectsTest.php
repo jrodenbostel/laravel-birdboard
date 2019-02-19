@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,7 +16,7 @@ class ProjectsTest extends TestCase
     {
         $project = factory('App\Project')->create();
 
-            $this->post('/projects', $project->toArray())->assertRedirect('login');
+        $this->post('/projects', $project->toArray())->assertRedirect('login');
         $this->get('/projects')->assertRedirect('login');
         $this->get('/projects/create')->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
@@ -26,7 +27,7 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory('App\Project')->raw();
+        $project = factory('App\Project')->create();
 
         $this->get($project->path())->assertStatus(403);
     }
@@ -34,18 +35,19 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_user_can_create_a_project()
     {
-
         //turn off default exception handling
         $this->withoutExceptionHandling();
 
         $attributes = ['title' => $this->faker->sentence(), 'description' => $this->faker->paragraph()];
 
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
 
         $this->get('/projects/create')->assertStatus(200);
 
-        $this->post('/projects', $attributes);
+        $response = $this->post('/projects', $attributes);
+        $project = Project::where($attributes)->first();
 
+        $response->assertRedirect($project->path());
         $this->assertDatabaseHas('projects', $attributes);
     }
 
