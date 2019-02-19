@@ -587,6 +587,16 @@ table {
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .08);
 }
 
+.form-input {
+  width: 66.66667%;
+  border-color: #f5f6f9;
+  border-width: 2px;
+  border-radius: .25rem;
+  height: 2rem;
+  margin-left: .75rem;
+  margin-right: .75rem;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.

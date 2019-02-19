@@ -47,6 +47,10 @@
   @apply .bg-white .mr-4 .p-5 .rounded-lg .shadow;
 }
 
+.form-input {
+  @apply .w-2/3 .border-grey-light .border-2 .rounded .h-8 .mx-3;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.
