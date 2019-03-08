@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 //this is one way to apply middleware to a set of routes. This can also be done in the constructor of Controllers (HomeController has this).
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', 'ProjectsController@index');
+    Route::get('/home', 'ProjectsController@index');
     Route::get('/projects', 'ProjectsController@index');
     Route::get('/projects/create', 'ProjectsController@create');
     Route::get('/projects/{project}', 'ProjectsController@show');
@@ -24,8 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/projects', 'ProjectsController@store');
 
     Route::post('/projects/{project}/tasks', 'TasksController@create');
-
-    Route::get('/home', 'HomeController@index')->name('home');
 });
 
 Auth::routes();
