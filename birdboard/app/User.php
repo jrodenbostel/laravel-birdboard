@@ -30,6 +30,7 @@ class User extends Authenticatable
     public function projects()
     {
         //adding 'owner_id to the end of this overrides the default foreign key name 'user_id's
-        return $this->hasMany(Project::class, 'owner_id');
+        //return $this->hasMany(Project::class, 'owner_id')->orderByDesc();
+        return $this->hasMany(Project::class, 'owner_id')->latest('updated_at');
     }
 }

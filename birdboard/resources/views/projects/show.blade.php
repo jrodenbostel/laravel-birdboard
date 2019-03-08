@@ -38,7 +38,7 @@
                 <div>
                     <h2 class="text-lg text-grey px-3 font-normal mb-3">General Notes</h2>
 
-                    <textarea class="card w-full" style="min-height: 200px">{{ $project->description }}</textarea>
+                    <textarea class="card w-full" style="min-height: 200px">{{ $project->notes }}</textarea>
                 </div>
             </div>
 

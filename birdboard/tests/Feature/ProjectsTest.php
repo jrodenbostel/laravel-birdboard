@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class ProjectsTest extends TestCase
@@ -35,10 +36,7 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_user_can_create_a_project()
     {
-        //turn off default exception handling
-        $this->withoutExceptionHandling();
-
-        $attributes = ['title' => $this->faker->sentence(), 'description' => $this->faker->paragraph()];
+        $attributes = ['title' => $this->faker->sentence(), 'description' => $this->faker->paragraph(), 'notes' => $this->faker->paragraph()];
 
         $this->signIn();
 
@@ -56,10 +54,6 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $this->withoutExceptionHandling();
-
-        //factory->create creates AND persists an object
-        //auth()->id() same as auth()->user()->id
         $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
 
         $this->get($project->path())

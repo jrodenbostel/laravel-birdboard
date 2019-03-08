@@ -29,7 +29,6 @@ class TasksTest extends TestCase
     /** @test */
     public function a_task_owner_can_complete_a_task()
     {
-        //turn off default exception handling
         $this->withoutExceptionHandling();
 
         $sentence = $this->faker->sentence();

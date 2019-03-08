@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use Illuminate\Support\Facades\Log;
 
 class ProjectsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
+
     public function index()
     {
-        $projects = auth()->user()->projects()->orderBy('updated_at', 'desc')->get();
+        //$projects = auth()->user()->projects()->orderBy('updated_at', 'desc')->get();
+        $projects = auth()->user()->projects;
 
         return view('projects.index', compact('projects'));
     }
@@ -22,16 +30,7 @@ class ProjectsController extends Controller
     //this method uses implicit route/model binding
     public function show(Project $project)
     {
-        //$project = Project::findOrFail(request('project'));
-
-        // if(auth()->id() !== $project->owner_id) {
-        //     abort(403);
-        // }
-
-        //updated from above to read a little easier
-        if (auth()->user()->isNot($project->owner)) {
-            abort(403);
-        }
+        $this->authorize('show', $project);
 
         return view('projects.show', compact('project'));
     }
@@ -40,15 +39,13 @@ class ProjectsController extends Controller
     {
         $attributes = request()->validate([
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'notes' => 'nullable'
         ]);
 
-        //this retrieves the current logged in user and always associates the project with that user.
-        //the validation code above just makes sure it's not null (which would let someone post
-        //any user id)
-        //$attributes['owner_id'] = auth()->id();
-
         $project = auth()->user()->projects()->create($attributes);
+
+        Log::info($project);
 
         return redirect($project->path());
     }

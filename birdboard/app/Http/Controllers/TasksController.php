@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Task;
-use Illuminate\Support\Facades\Log;
 
 class TasksController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
+
     public function create(Project $project)
     {
+        $this->authorize('update', $project);
 
         $attributes = request()->validate([
             'body' => 'required',
         ]);
 
         //updated from above to read a little easier
-        $this->isOwner($project);
+        //$this->authorize('create', $project);
 
         $project->tasks()->create($attributes);
 
@@ -25,7 +32,7 @@ class TasksController extends Controller
 
     public function update(Project $project, Task $task)
     {
-        $this->isOwner($project);
+        $this->authorize('update', $task);
 
         $task->update([
             'body' => request('body'),
@@ -35,13 +42,4 @@ class TasksController extends Controller
         return redirect($project->path());
     }
 
-    /**
-     * @param Project $project
-     */
-    public function isOwner(Project $project): void
-    {
-        if (auth()->user()->isNot($project->owner)) {
-            abort(403);
-        }
-    }
 }
