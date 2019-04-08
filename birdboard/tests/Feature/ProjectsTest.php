@@ -34,6 +34,19 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
+    public function authenticated_users_cannot_update_other_projects()
+    {
+        $notes = $this->faker->paragraph();
+
+        $attributes = ['notes' => $notes];
+
+        $this->signIn();
+        $project = factory('App\Project')->create();
+
+        $this->patch($project->path(), $attributes)->assertStatus(403);
+    }
+
+    /** @test */
     public function a_user_can_create_a_project()
     {
         $attributes = ['title' => $this->faker->sentence(), 'description' => $this->faker->paragraph(), 'notes' => $this->faker->paragraph()];
@@ -47,6 +60,20 @@ class ProjectsTest extends TestCase
 
         $response->assertRedirect($project->path());
         $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test */
+    public function a_user_can_update_a_project()
+    {
+        $notes = $this->faker->paragraph();
+
+        $attributes = ['notes' => $notes];
+
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
+
+        $this->patch($project->path(), $attributes)->assertStatus(302);
+        $this->assertDatabaseHas('projects', ['id' => $project->id, 'notes' => $notes]);
     }
 
     /** @test */

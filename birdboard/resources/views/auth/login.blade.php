@@ -6,8 +6,8 @@
             <h2 class="text-lg text-grey font-normal mb-3">{{ __('Login') }}</h2>
         </div>
     </header>
-    <main>
-        <div class="card">
+    <main class="flex justify-center">
+        <div class="card w-1/2">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-3">
@@ -20,8 +20,8 @@
                     <div>
                         @if ($errors->has('email'))
                             <span role="alert">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
                         @endif
                     </div>
                 </div>
@@ -35,19 +35,23 @@
                     <div>
                         @if ($errors->has('password'))
                             <span role="alert">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
+                            <strong>{{ $errors->first('password') }}</strong>
+                        </span>
                         @endif
                     </div>
                 </div>
                 <div class="mb-3 w-full">
-                    <div class="flex justify-center items-center">
+                    <div class="flex w-5/6 justify-end">
                         <div class="mx-4">
                             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember">
                                 {{ __('Remember Me') }}
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div class="mb-3 w-full">
+                    <div class="flex w-5/6 justify-end">
                         <div class="mx-4">
                             <button class="button" type="submit">
                                 {{ __('Login') }}

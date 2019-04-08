@@ -34,6 +34,10 @@ class TasksController extends Controller
     {
         $this->authorize('update', $task);
 
+        request()->validate([
+            'body' => 'required',
+        ]);
+
         $task->update([
             'body' => request('body'),
             'isComplete' => request()->has('isComplete')
